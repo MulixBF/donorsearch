@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify
 from dill import dill
 import re
 from html2text import html2text
+from sklearn.feature_extraction.text import CountVectorizer
+from nltk.stem.snowball import RussianStemmer
 
 app = Flask(__name__)
 
@@ -28,13 +30,11 @@ def predict():
     string = request.args.get('s')
     string = preprocess(string)
     vect = vectorizer.transform([string])
-    prior = model.class_count_[1] / sum(model.class_count_)
     proba = model.predict_proba(vect)[0][1]
 
     return jsonify({
-        'prior': prior,
-        'posterior': proba,
-        'result': 1 if proba > prior else 0
+        'proba': proba,
+        'result': 1 if proba > 0.5 else 0
     })
 
 if __name__ == '__main__':
