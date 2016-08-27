@@ -15,11 +15,11 @@ def preprocess(text):
     return text
 
 vectorizer = None
-with open('../model/vectorizer.pkl', 'rb') as f:
+with open('/media/data/donorsearch/model/randomforest/vectorizer.pkl', 'rb') as f:
     vectorizer = dill.load(f)
 
 model = None
-with open('../model/model.pkl', 'rb') as f:
+with open('/media/data/donorsearch/model/randomforest/model.pkl', 'rb') as f:
     model = dill.load(f)
 
 
