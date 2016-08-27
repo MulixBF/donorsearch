@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from sklearn.externals import joblib
+from dill import dill
 import re
 from html2text import html2text
 
@@ -14,8 +14,13 @@ def preprocess(text):
     text = text.lower()
     return text
 
-vectorizer = joblib.load('../model/vectorizer.pkl')
-model = joblib.load('../model/model.pkl')
+vectorizer = None
+with open('../model/vectorizer.pkl', 'rb') as f:
+    vectorizer = dill.load(f)
+
+model = None
+with open('../model/model.pkl', 'rb') as f:
+    model = dill.load(f)
 
 
 @app.route('/predict', methods=['GET'])
