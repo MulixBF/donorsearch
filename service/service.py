@@ -2,8 +2,6 @@ from flask import Flask, request, jsonify
 from dill import dill
 import re
 from html2text import html2text
-from sklearn.feature_extraction.text import CountVectorizer
-from nltk.stem.snowball import RussianStemmer
 
 app = Flask(__name__)
 
@@ -17,11 +15,11 @@ def preprocess(text):
     return text
 
 vectorizer = None
-with open('/media/data/donorsearch/model/voting/vectorizer.pkl', 'rb') as f:
+with open('/media/data/donorsearch/model/svm/vectorizer.pkl', 'rb') as f:
     vectorizer = dill.load(f)
 
 model = None
-with open('/media/data/donorsearch/model/voting/model.pkl', 'rb') as f:
+with open('/media/data/donorsearch/model/svm/model.pkl', 'rb') as f:
     model = dill.load(f)
 
 
