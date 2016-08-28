@@ -1,25 +1,29 @@
 from flask import Flask, request, jsonify
 from dill import dill
 import re
+import os
 from html2text import html2text
 
 app = Flask(__name__)
+
+MODEL_PATH = os.environ('DONORSEARCH_MODEL_PATH')
 
 
 def preprocess(text):
     text = html2text(text)
     text = re.sub('\W', ' ', text)
     text = re.sub('\s+', ' ', text)
+    text = re.sub('_', ' ', text)
     text = re.sub('[A-Za-z0-9]', '', text)
     text = text.lower()
     return text
 
 vectorizer = None
-with open('/media/data/donorsearch/model/svm/vectorizer.pkl', 'rb') as f:
+with open(MODEL_PATH + 'vectorizer.pkl', 'rb') as f:
     vectorizer = dill.load(f)
 
 model = None
-with open('/media/data/donorsearch/model/svm/model.pkl', 'rb') as f:
+with open(MODEL_PATH + 'model.pkl', 'rb') as f:
     model = dill.load(f)
 
 
